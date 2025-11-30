@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for game in breakout-game pacman-game othello-game hanafuda-game tetris-game)",
+      "Bash(do echo \"Processing $game...\")",
+      "Bash(done)",
+      "Bash(dir:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

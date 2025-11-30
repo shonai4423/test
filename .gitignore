@@ -1,0 +1,28 @@
+# OS関連ファイル
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# エディタ関連
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ログファイル
+*.log
+npm-debug.log*
+
+# 依存関係（もし今後追加する場合）
+node_modules/
+package-lock.json
+
+# 一時ファイル
+*.tmp
+*.temp
+
+# 環境変数ファイル
+.env
+.env.local
+

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オセロ - Othello Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="../index.html" class="home-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            ホームに戻る
+        </a>
+    </nav>
+    <div class="game-container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40">
+                    <circle cx="20" cy="20" r="18" fill="url(#logoGradient)" stroke="#fff" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="12" fill="#1a1a1a"/>
+                    <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#667eea"/>
+                            <stop offset="100%" stop-color="#764ba2"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1>オセロ</h1>
+            </div>
+            <div class="header-controls">
+                <button class="icon-btn" id="soundToggle" title="サウンドON/OFF">
+                    <svg id="soundOn" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <svg id="soundOff" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="themeToggle" title="テーマ切り替え">
+                    <svg id="darkIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="lightIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- メインゲームエリア -->
+        <main class="main-content">
+            <!-- ゲーム情報 -->
+            <div class="game-info">
+                <div class="player-info black">
+                    <div class="player-stone">
+                        <div class="stone black-stone"></div>
+                    </div>
+                    <div class="player-details">
+                        <h3>黒</h3>
+                        <div class="score" id="blackScore">2</div>
+                    </div>
+                </div>
+
+                <div class="turn-indicator" id="turnIndicator">
+                    <div class="turn-text">黒のターン</div>
+                    <div class="timer" id="timer">00:00</div>
+                </div>
+
+                <div class="player-info white">
+                    <div class="player-stone">
+                        <div class="stone white-stone"></div>
+                    </div>
+                    <div class="player-details">
+                        <h3>白</h3>
+                        <div class="score" id="whiteScore">2</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ゲームボード -->
+            <div class="board-container">
+                <div class="board" id="board"></div>
+                <div class="board-overlay" id="boardOverlay"></div>
+            </div>
+
+            <!-- コントロールパネル -->
+            <div class="controls">
+                <button class="btn btn-primary" id="newGameBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                    </svg>
+                    新しいゲーム
+                </button>
+                <button class="btn btn-secondary" id="undoBtn" disabled>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 7v6h6"></path>
+                        <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+                    </svg>
+                    元に戻す
+                </button>
+                <button class="btn btn-secondary" id="hintBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    ヒント
+                </button>
+            </div>
+
+            <!-- ゲームモード選択 -->
+            <div class="game-modes">
+                <h3>ゲームモード</h3>
+                <div class="mode-buttons">
+                    <button class="mode-btn active" data-mode="pvp">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        対人戦
+                    </button>
+                    <button class="mode-btn" data-mode="pvc-easy">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <polyline points="17 2 12 7 7 2"></polyline>
+                        </svg>
+                        CPU（易）
+                    </button>
+                    <button class="mode-btn" data-mode="pvc-normal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <polyline points="17 2 12 7 7 2"></polyline>
+                        </svg>
+                        CPU（普通）
+                    </button>
+                    <button class="mode-btn" data-mode="pvc-hard">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                            <polyline points="17 2 12 7 7 2"></polyline>
+                        </svg>
+                        CPU（難）
+                    </button>
+                </div>
+            </div>
+
+            <!-- 統計情報 -->
+            <div class="stats">
+                <h3>統計</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">総ゲーム数</div>
+                        <div class="stat-value" id="totalGames">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">勝利数</div>
+                        <div class="stat-value" id="wins">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">引き分け</div>
+                        <div class="stat-value" id="draws">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">勝率</div>
+                        <div class="stat-value" id="winRate">0%</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ゲーム終了モーダル -->
+    <div class="modal" id="gameOverModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="gameOverTitle">ゲーム終了</h2>
+            </div>
+            <div class="modal-body">
+                <div class="result-display">
+                    <div class="result-score">
+                        <div class="result-item">
+                            <div class="stone black-stone"></div>
+                            <span id="finalBlackScore">0</span>
+                        </div>
+                        <div class="vs">VS</div>
+                        <div class="result-item">
+                            <div class="stone white-stone"></div>
+                            <span id="finalWhiteScore">0</span>
+                        </div>
+                    </div>
+                    <div class="result-message" id="resultMessage"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeModalBtn">閉じる</button>
+                <button class="btn btn-primary" id="newGameFromModalBtn">新しいゲーム</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

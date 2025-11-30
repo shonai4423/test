@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>テトリス - Tetris</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="../index.html" class="home-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            ホームに戻る
+        </a>
+    </nav>
+    <div class="game-container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40">
+                    <rect x="0" y="0" width="10" height="10" fill="#00f0f0"/>
+                    <rect x="10" y="0" width="10" height="10" fill="#f0a000"/>
+                    <rect x="20" y="0" width="10" height="10" fill="#a000f0"/>
+                    <rect x="30" y="0" width="10" height="10" fill="#f00000"/>
+                    <rect x="0" y="10" width="10" height="10" fill="#00f000"/>
+                    <rect x="10" y="10" width="10" height="10" fill="#0000f0"/>
+                    <rect x="20" y="10" width="10" height="10" fill="#f0f000"/>
+                    <rect x="0" y="20" width="10" height="10" fill="#f0a000"/>
+                    <rect x="10" y="20" width="10" height="10" fill="#00f0f0"/>
+                    <rect x="20" y="20" width="10" height="10" fill="#f00000"/>
+                    <rect x="30" y="20" width="10" height="10" fill="#00f000"/>
+                </svg>
+                <h1>テトリス</h1>
+            </div>
+            <div class="header-controls">
+                <button class="icon-btn" id="helpBtn" title="操作方法">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="soundToggle" title="サウンドON/OFF">
+                    <svg id="soundOn" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <svg id="soundOff" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="themeToggle" title="テーマ切り替え">
+                    <svg id="darkIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="lightIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- メインゲームエリア -->
+        <main class="main-content">
+            <!-- 左パネル：スコア＆統計 -->
+            <aside class="left-panel">
+                <div class="panel-section score-section">
+                    <h3>スコア</h3>
+                    <div class="score-display" id="score">0</div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>レベル</h3>
+                    <div class="level-display" id="level">1</div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>ライン</h3>
+                    <div class="lines-display" id="lines">0</div>
+                </div>
+
+                <div class="panel-section statistics">
+                    <h3>統計</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-label">ハイスコア</div>
+                            <div class="stat-value" id="highScore">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">総ゲーム数</div>
+                            <div class="stat-value" id="totalGames">0</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">総ライン数</div>
+                            <div class="stat-value" id="totalLines">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-section controls-info">
+                    <h3>操作方法</h3>
+                    <div class="control-item">
+                        <kbd>←</kbd> <kbd>→</kbd>
+                        <span>移動</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd>↓</kbd>
+                        <span>高速落下</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd>↑</kbd> <kbd>SPACE</kbd>
+                        <span>回転</span>
+                    </div>
+                    <div class="control-item">
+                        <kbd>P</kbd>
+                        <span>一時停止</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ゲームボード -->
+            <div class="game-board-container">
+                <div class="game-status" id="gameStatus">
+                    <div class="status-text">スペースキーでスタート</div>
+                </div>
+                <canvas id="gameCanvas" width="300" height="600"></canvas>
+                <div class="game-overlay" id="gameOverlay">
+                    <div class="overlay-content">
+                        <h2 id="overlayTitle">ゲームオーバー</h2>
+                        <div class="overlay-score">
+                            <div class="overlay-label">スコア</div>
+                            <div class="overlay-value" id="finalScore">0</div>
+                        </div>
+                        <button class="btn btn-primary" id="restartBtn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="1 4 1 10 7 10"></polyline>
+                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                            </svg>
+                            もう一度プレイ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右パネル：次のブロック＆ホールド -->
+            <aside class="right-panel">
+                <div class="panel-section">
+                    <h3>ホールド</h3>
+                    <canvas id="holdCanvas" width="120" height="120"></canvas>
+                    <div class="hold-hint">Cキーでホールド</div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>次のブロック</h3>
+                    <canvas id="nextCanvas" width="120" height="120"></canvas>
+                </div>
+
+                <div class="panel-section controls-section">
+                    <button class="btn btn-primary" id="startBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        スタート
+                    </button>
+                    <button class="btn btn-secondary" id="pauseBtn" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="6" y="4" width="4" height="16"></rect>
+                            <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                        一時停止
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="1 4 1 10 7 10"></polyline>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                        </svg>
+                        リセット
+                    </button>
+                </div>
+
+                <div class="panel-section level-select">
+                    <h3>開始レベル</h3>
+                    <div class="level-buttons">
+                        <button class="level-btn active" data-level="1">1</button>
+                        <button class="level-btn" data-level="3">3</button>
+                        <button class="level-btn" data-level="5">5</button>
+                        <button class="level-btn" data-level="10">10</button>
+                    </div>
+                </div>
+
+                <div class="panel-section achievements">
+                    <h3>今回の達成</h3>
+                    <div id="achievementsList" class="achievements-list">
+                        <div class="achievement-placeholder">プレイしてください</div>
+                    </div>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- ヘルプモーダル -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>テトリスの遊び方</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>ゲームの目的</h3>
+                <p>落下してくるテトロミノ（ブロック）を回転・移動させて、横一列を揃えてラインを消去します。</p>
+
+                <h3>操作方法</h3>
+                <ul>
+                    <li><kbd>←</kbd> <kbd>→</kbd> - ブロックを左右に移動</li>
+                    <li><kbd>↓</kbd> - ブロックを高速落下</li>
+                    <li><kbd>↑</kbd> または <kbd>SPACE</kbd> - ブロックを回転</li>
+                    <li><kbd>C</kbd> - ブロックをホールド（保管）</li>
+                    <li><kbd>P</kbd> - 一時停止</li>
+                </ul>
+
+                <h3>得点システム</h3>
+                <ul>
+                    <li><strong>1ライン消去：</strong> 100点 × レベル</li>
+                    <li><strong>2ライン消去：</strong> 300点 × レベル</li>
+                    <li><strong>3ライン消去：</strong> 500点 × レベル</li>
+                    <li><strong>4ライン消去（テトリス）：</strong> 800点 × レベル</li>
+                    <li><strong>ソフトドロップ：</strong> 1点/マス</li>
+                </ul>
+
+                <h3>レベルアップ</h3>
+                <p>10ライン消去するごとにレベルが上がり、落下速度が速くなります。</p>
+
+                <h3>ホールド機能</h3>
+                <p>Cキーで現在のブロックを保管し、後で使用できます。1ターンに1回のみ使用可能です。</p>
+
+                <h3>ゲームオーバー</h3>
+                <p>ブロックが画面上部まで積み上がるとゲームオーバーです。</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary modal-close">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

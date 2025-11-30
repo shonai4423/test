@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ブロック崩し - Breakout Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="../index.html" class="home-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            ホームに戻る
+        </a>
+    </nav>
+    <div class="game-container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <div class="logo">
+                <span style="font-size: 2rem;">🧱</span>
+                <h1>ブロック崩し</h1>
+            </div>
+            <div class="header-controls">
+                <button id="soundToggle" class="icon-btn" title="サウンド切替">
+                    <span id="soundOn" style="font-size: 1.25rem;">🔊</span>
+                    <span id="soundOff" style="font-size: 1.25rem; display: none;">🔇</span>
+                </button>
+                <button id="themeToggle" class="icon-btn" title="テーマ切替">
+                    <span id="darkIcon" style="font-size: 1.25rem;">🌙</span>
+                    <span id="lightIcon" style="font-size: 1.25rem; display: none;">☀️</span>
+                </button>
+                <button id="helpBtn" class="icon-btn" title="ヘルプ">
+                    <span style="font-size: 1.25rem;">❓</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <div class="main-content">
+            <!-- 左パネル -->
+            <aside class="left-panel">
+                <!-- スコア -->
+                <div class="panel-section score-panel">
+                    <h3>スコア</h3>
+                    <div id="score" class="score-display">0</div>
+                </div>
+
+                <!-- ライフ -->
+                <div class="panel-section">
+                    <h3>残りライフ</h3>
+                    <div id="lives" class="lives-display">
+                        <span class="life-icon">❤️</span>
+                        <span class="life-icon">❤️</span>
+                        <span class="life-icon">❤️</span>
+                    </div>
+                </div>
+
+                <!-- レベル -->
+                <div class="panel-section">
+                    <h3>レベル</h3>
+                    <div id="level" class="level-display">1</div>
+                    <div class="progress-bar">
+                        <div id="levelProgress" class="progress-fill"></div>
+                    </div>
+                </div>
+
+                <!-- 難易度選択 -->
+                <div class="panel-section">
+                    <h3>難易度</h3>
+                    <div class="difficulty-buttons">
+                        <button class="difficulty-btn" data-difficulty="easy">
+                            <span class="difficulty-icon">😊</span>
+                            <span class="difficulty-name">簡単</span>
+                        </button>
+                        <button class="difficulty-btn active" data-difficulty="normal">
+                            <span class="difficulty-icon">😐</span>
+                            <span class="difficulty-name">普通</span>
+                        </button>
+                        <button class="difficulty-btn" data-difficulty="hard">
+                            <span class="difficulty-icon">😤</span>
+                            <span class="difficulty-name">難しい</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ゲームボードエリア -->
+            <div class="game-board-area">
+                <!-- ゲーム情報 -->
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-icon">🎮</span>
+                        <span id="gameStatus">マウスで開始</span>
+                    </div>
+                </div>
+
+                <!-- キャンバス -->
+                <div class="canvas-container">
+                    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+                    <!-- ゲームオーバーレイ -->
+                    <div id="gameOverlay" class="game-overlay">
+                        <div class="overlay-content">
+                            <div id="overlayEmoji" style="font-size: 5rem; margin-bottom: 1rem;">🎮</div>
+                            <h2 id="overlayTitle">ゲーム開始</h2>
+                            <div class="overlay-stats">
+                                <div class="overlay-stat">
+                                    <div class="overlay-label">スコア</div>
+                                    <div id="finalScore" class="overlay-value">0</div>
+                                </div>
+                                <div class="overlay-stat">
+                                    <div class="overlay-label">レベル</div>
+                                    <div id="finalLevel" class="overlay-value">1</div>
+                                </div>
+                            </div>
+                            <button id="restartBtn" class="btn btn-primary btn-large">もう一度プレイ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- コントロールヒント -->
+                <div class="controls-hint">
+                    <div class="hint-item">
+                        <kbd>マウス</kbd>
+                        <span>パドル移動</span>
+                    </div>
+                    <div class="hint-item">
+                        <kbd>クリック</kbd>
+                        <span>ボール発射</span>
+                    </div>
+                    <div class="hint-item">
+                        <kbd>SPACE</kbd>
+                        <span>一時停止</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右パネル -->
+            <aside class="right-panel">
+                <!-- 統計 -->
+                <div class="panel-section">
+                    <h3>統計</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">ハイスコア</span>
+                        <span id="highScore" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">最高レベル</span>
+                        <span id="maxLevel" class="stat-value">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">総ゲーム数</span>
+                        <span id="totalGames" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">クリア数</span>
+                        <span id="totalClears" class="stat-value">0</span>
+                    </div>
+                </div>
+
+                <!-- コントロール -->
+                <div class="panel-section">
+                    <h3>コントロール</h3>
+                    <div class="controls-panel">
+                        <button id="newGameBtn" class="btn btn-primary">
+                            <span style="font-size: 1.25rem;">🎮</span>
+                            <span>新しいゲーム</span>
+                        </button>
+                        <button id="pauseBtn" class="btn btn-secondary" disabled>
+                            <span style="font-size: 1.25rem;">⏸️</span>
+                            <span>一時停止</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- パワーアップ -->
+                <div class="panel-section">
+                    <h3>パワーアップ</h3>
+                    <div class="powerups-list">
+                        <div class="powerup-item">
+                            <span class="powerup-icon">🔴</span>
+                            <span class="powerup-name">拡大パドル</span>
+                        </div>
+                        <div class="powerup-item">
+                            <span class="powerup-icon">🔵</span>
+                            <span class="powerup-name">スローボール</span>
+                        </div>
+                        <div class="powerup-item">
+                            <span class="powerup-icon">🟡</span>
+                            <span class="powerup-name">マルチボール</span>
+                        </div>
+                        <div class="powerup-item">
+                            <span class="powerup-icon">🟢</span>
+                            <span class="powerup-name">貫通ボール</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 達成項目 -->
+                <div class="panel-section">
+                    <h3>今回の達成</h3>
+                    <div id="achievementsList" class="achievements-list">
+                        <div class="achievement-placeholder">まだ達成項目なし</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- ヘルプモーダル -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>ヘルプ - ゲームの遊び方</h2>
+                <button class="modal-close">✕</button>
+            </div>
+            <div class="modal-body">
+                <h3>基本ルール</h3>
+                <ul class="help-list">
+                    <li>🎯 マウスでパドルを左右に動かす</li>
+                    <li>🏀 クリックでボールを発射</li>
+                    <li>🧱 すべてのブロックを壊せばレベルクリア</li>
+                    <li>❤️ ライフが0になるとゲームオーバー</li>
+                </ul>
+
+                <h3>ブロックの種類</h3>
+                <ul class="help-list">
+                    <li>🟥 赤 (10点) - 1回で破壊</li>
+                    <li>🟧 オレンジ (20点) - 1回で破壊</li>
+                    <li>🟨 黄 (30点) - 1回で破壊</li>
+                    <li>🟩 緑 (40点) - 1回で破壊</li>
+                    <li>🟦 青 (50点) - 1回で破壊</li>
+                    <li>🟪 紫 (60点) - 1回で破壊</li>
+                    <li>⬜ 銀 (100点) - 2回で破壊</li>
+                    <li>🟫 金 (200点) - 3回で破壊</li>
+                </ul>
+
+                <h3>パワーアップ</h3>
+                <ul class="help-list">
+                    <li>🔴 拡大パドル - パドルが大きくなる</li>
+                    <li>🔵 スローボール - ボールの速度が遅くなる</li>
+                    <li>🟡 マルチボール - ボールが3つに増える</li>
+                    <li>🟢 貫通ボール - ブロックを貫通する</li>
+                </ul>
+
+                <h3>操作方法</h3>
+                <ul class="help-list">
+                    <li>マウス移動 - パドルを左右に移動</li>
+                    <li>クリック - ボール発射（待機中）</li>
+                    <li>SPACE - 一時停止/再開</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

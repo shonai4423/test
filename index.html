@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ゲーム＆アプリポータル</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+
+            --border: #475569;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        header p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: white;
+            text-align: center;
+            position: relative;
+            animation: fadeIn 1s;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, white, transparent);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            animation: fadeInUp 1s;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-xl);
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 40px -5px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .card:nth-child(1) .card-icon { animation-delay: 0s; }
+        .card:nth-child(2) .card-icon { animation-delay: 0.2s; }
+        .card:nth-child(3) .card-icon { animation-delay: 0.4s; }
+        .card:nth-child(4) .card-icon { animation-delay: 0.6s; }
+        .card:nth-child(5) .card-icon { animation-delay: 0.8s; }
+        .card:nth-child(6) .card-icon { animation-delay: 1s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+
+        .card-description {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            header p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle">
+        <span id="darkIcon">🌙</span>
+        <span id="lightIcon" style="display: none;">☀️</span>
+    </button>
+
+    <div class="container">
+        <header>
+            <h1>🎮 ゲーム＆アプリポータル</h1>
+            <p>楽しいゲームと便利なアプリをお楽しみください</p>
+        </header>
+
+        <!-- アプリセクション -->
+        <section class="section">
+            <h2 class="section-title">📱 アプリケーション</h2>
+            <div class="cards-grid">
+                <a href="weather-app/index.html" class="card">
+                    <div class="card-icon">🌤️</div>
+                    <h3 class="card-title">天気予報アプリ</h3>
+                    <p class="card-description">世界中の都市の天気情報をリアルタイムで確認。5日間予報も表示します。</p>
+                    <div class="card-tags">
+                        <span class="tag">天気</span>
+                        <span class="tag">便利</span>
+                    </div>
+                </a>
+
+                <a href="productivity-app/index.html" class="card">
+                    <div class="card-icon">✅</div>
+                    <h3 class="card-title">生産性アプリ</h3>
+                    <p class="card-description">タスク管理とポモドーロタイマーで生産性を向上。統計機能も搭載。</p>
+                    <div class="card-tags">
+                        <span class="tag">タスク</span>
+                        <span class="tag">タイマー</span>
+                    </div>
+                </a>
+
+                <a href="finance-dashboard/index.html" class="card">
+                    <div class="card-icon">💰</div>
+                    <h3 class="card-title">財務ダッシュボード</h3>
+                    <p class="card-description">資産管理と取引履歴をグラフで可視化。ポートフォリオを一目で把握。</p>
+                    <div class="card-tags">
+                        <span class="tag">財務</span>
+                        <span class="tag">チャート</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ゲームセクション -->
+        <section class="section">
+            <h2 class="section-title">🎯 クラシックゲーム</h2>
+            <div class="cards-grid">
+                <a href="snake-game/index.html" class="card">
+                    <div class="card-icon">🐍</div>
+                    <h3 class="card-title">スネークゲーム</h3>
+                    <p class="card-description">クラシックなスネークゲーム。フードを食べて長くなろう！</p>
+                    <div class="card-tags">
+                        <span class="tag">アクション</span>
+                        <span class="tag">シンプル</span>
+                    </div>
+                </a>
+
+                <a href="minesweeper-game/index.html" class="card">
+                    <div class="card-icon">💣</div>
+                    <h3 class="card-title">マインスイーパー</h3>
+                    <p class="card-description">地雷を避けてすべてのマスを開けよう。3つの難易度から選択。</p>
+                    <div class="card-tags">
+                        <span class="tag">パズル</span>
+                        <span class="tag">戦略</span>
+                    </div>
+                </a>
+
+                <a href="breakout-game/index.html" class="card">
+                    <div class="card-icon">🧱</div>
+                    <h3 class="card-title">ブロック崩し</h3>
+                    <p class="card-description">パドルでボールを跳ね返してブロックを破壊。パワーアップも登場！</p>
+                    <div class="card-tags">
+                        <span class="tag">アクション</span>
+                        <span class="tag">爽快</span>
+                    </div>
+                </a>
+
+                <a href="tetris-game/index.html" class="card">
+                    <div class="card-icon">🟦</div>
+                    <h3 class="card-title">テトリス</h3>
+                    <p class="card-description">落ちてくるブロックを揃えて消そう。ホールド機能搭載。</p>
+                    <div class="card-tags">
+                        <span class="tag">パズル</span>
+                        <span class="tag">定番</span>
+                    </div>
+                </a>
+
+                <a href="pacman-game/index.html" class="card">
+                    <div class="card-icon">🟡</div>
+                    <h3 class="card-title">パックマン</h3>
+                    <p class="card-description">迷路を駆け抜けてドットを集めよう。4体のゴーストから逃げろ！</p>
+                    <div class="card-tags">
+                        <span class="tag">アクション</span>
+                        <span class="tag">レトロ</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ボードゲームセクション -->
+        <section class="section">
+            <h2 class="section-title">🎲 ボードゲーム</h2>
+            <div class="cards-grid">
+                <a href="othello-game/index.html" class="card">
+                    <div class="card-icon">⚫</div>
+                    <h3 class="card-title">オセロ</h3>
+                    <p class="card-description">AIと対戦するオセロゲーム。3つの難易度から選択可能。</p>
+                    <div class="card-tags">
+                        <span class="tag">戦略</span>
+                        <span class="tag">AI対戦</span>
+                    </div>
+                </a>
+
+                <a href="hanafuda-game/index.html" class="card">
+                    <div class="card-icon">🌸</div>
+                    <h3 class="card-title">花札</h3>
+                    <p class="card-description">日本の伝統カードゲーム。11種類の役で高得点を狙おう。</p>
+                    <div class="card-tags">
+                        <span class="tag">カード</span>
+                        <span class="tag">和風</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2025 ゲーム＆アプリポータル - すべてのゲームとアプリをお楽しみください</p>
+    </footer>
+
+    <script>
+        // テーマ切り替え
+        const themeToggle = document.getElementById('themeToggle');
+        const darkIcon = document.getElementById('darkIcon');
+        const lightIcon = document.getElementById('lightIcon');
+        const html = document.documentElement;
+
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            if (theme === 'light') {
+                darkIcon.style.display = 'block';
+                lightIcon.style.display = 'none';
+            } else {
+                darkIcon.style.display = 'none';
+                lightIcon.style.display = 'block';
+            }
+        }
+
+        // カードのホバーエフェクト音
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

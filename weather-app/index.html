@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天気予報アプリ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="../index.html" class="home-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            ホームに戻る
+        </a>
+    </nav>
+
+    <div class="container">
+        <header>
+            <h1>天気予報</h1>
+            <p class="subtitle">世界中の都市の天気をチェック</p>
+        </header>
+
+        <div class="search-section">
+            <input type="text" id="cityInput" placeholder="都市名を入力（例：Tokyo, London, New York）">
+            <button id="searchBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                検索
+            </button>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+        <div id="loadingSpinner" class="loading-spinner"></div>
+
+        <div id="weatherCard" class="weather-card hidden">
+            <div class="weather-header">
+                <div class="location">
+                    <h2 id="cityName"></h2>
+                    <p id="country"></p>
+                </div>
+                <div class="current-temp">
+                    <span id="temperature"></span>
+                    <span class="temp-unit">°C</span>
+                </div>
+            </div>
+
+            <div class="weather-icon-section">
+                <img id="weatherIcon" src="" alt="weather icon">
+                <p id="weatherDescription"></p>
+            </div>
+
+            <div class="weather-details">
+                <div class="detail-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                    </svg>
+                    <div>
+                        <p class="detail-label">体感温度</p>
+                        <p class="detail-value" id="feelsLike"></p>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                    </svg>
+                    <div>
+                        <p class="detail-label">湿度</p>
+                        <p class="detail-value" id="humidity"></p>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"></path>
+                    </svg>
+                    <div>
+                        <p class="detail-label">風速</p>
+                        <p class="detail-value" id="windSpeed"></p>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <div>
+                        <p class="detail-label">気圧</p>
+                        <p class="detail-value" id="pressure"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="forecast-section">
+                <h3>5日間予報</h3>
+                <div id="forecastContainer" class="forecast-container"></div>
+            </div>
+        </div>
+
+        <div class="recent-searches">
+            <h3>最近の検索</h3>
+            <div id="recentList" class="recent-list"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

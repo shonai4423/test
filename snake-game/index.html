@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スネークゲーム - Snake Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="../index.html" class="home-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            ホームに戻る
+        </a>
+    </nav>
+    <div class="game-container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40">
+                    <path d="M5 20 Q 10 10, 20 15 T 35 20" stroke="#10b981" stroke-width="6" fill="none" stroke-linecap="round"/>
+                    <circle cx="35" cy="20" r="4" fill="#10b981"/>
+                </svg>
+                <h1>スネークゲーム</h1>
+            </div>
+            <div class="header-controls">
+                <button class="icon-btn" id="soundToggle" title="サウンドON/OFF">
+                    <svg id="soundOn" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <svg id="soundOff" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="themeToggle" title="テーマ切り替え">
+                    <svg id="darkIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="lightIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- メインゲームエリア -->
+        <main class="main-content">
+            <!-- 左パネル -->
+            <aside class="left-panel">
+                <div class="panel-section score-panel">
+                    <h3>スコア</h3>
+                    <div class="score-display" id="score">0</div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>ハイスコア</h3>
+                    <div class="high-score-display" id="highScore">0</div>
+                </div>
+
+                <div class="panel-section">
+                    <h3>長さ</h3>
+                    <div class="length-display" id="length">1</div>
+                </div>
+
+                <div class="panel-section speed-panel">
+                    <h3>速度レベル</h3>
+                    <div class="speed-display" id="speed">1</div>
+                    <div class="speed-bar">
+                        <div class="speed-fill" id="speedFill"></div>
+                    </div>
+                </div>
+
+                <div class="panel-section stats-panel">
+                    <h3>統計</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">総ゲーム数</span>
+                        <span class="stat-value" id="totalGames">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">最高長さ</span>
+                        <span class="stat-value" id="maxLength">1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">獲得フード</span>
+                        <span class="stat-value" id="totalFood">0</span>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ゲームボード -->
+            <div class="game-board-area">
+                <div class="game-info">
+                    <div class="info-item">
+                        <span class="info-icon">🎮</span>
+                        <span id="gameStatus">矢印キーでスタート</span>
+                    </div>
+                </div>
+
+                <div class="canvas-container">
+                    <canvas id="gameCanvas" width="600" height="600"></canvas>
+                    <div class="game-overlay" id="gameOverlay">
+                        <div class="overlay-content">
+                            <h2 id="overlayTitle">ゲームオーバー</h2>
+                            <div class="overlay-stats">
+                                <div class="overlay-stat">
+                                    <div class="overlay-label">スコア</div>
+                                    <div class="overlay-value" id="finalScore">0</div>
+                                </div>
+                                <div class="overlay-stat">
+                                    <div class="overlay-label">長さ</div>
+                                    <div class="overlay-value" id="finalLength">0</div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-large" id="restartBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="1 4 1 10 7 10"></polyline>
+                                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                                </svg>
+                                もう一度プレイ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="controls-hint">
+                    <div class="hint-item">
+                        <kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd>
+                        <span>スネークを操作</span>
+                    </div>
+                    <div class="hint-item">
+                        <kbd>SPACE</kbd>
+                        <span>一時停止</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右パネル -->
+            <aside class="right-panel">
+                <div class="panel-section controls-panel">
+                    <h3>ゲーム操作</h3>
+                    <button class="btn btn-primary" id="startBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        スタート
+                    </button>
+                    <button class="btn btn-secondary" id="pauseBtn" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="6" y="4" width="4" height="16"></rect>
+                            <rect x="14" y="4" width="4" height="16"></rect>
+                        </svg>
+                        一時停止
+                    </button>
+                    <button class="btn btn-secondary" id="resetBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="1 4 1 10 7 10"></polyline>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                        </svg>
+                        リセット
+                    </button>
+                </div>
+
+                <div class="panel-section difficulty-panel">
+                    <h3>難易度</h3>
+                    <div class="difficulty-buttons">
+                        <button class="difficulty-btn" data-difficulty="easy">
+                            <span class="difficulty-icon">🐢</span>
+                            <span class="difficulty-name">簡単</span>
+                        </button>
+                        <button class="difficulty-btn active" data-difficulty="normal">
+                            <span class="difficulty-icon">🐍</span>
+                            <span class="difficulty-name">普通</span>
+                        </button>
+                        <button class="difficulty-btn" data-difficulty="hard">
+                            <span class="difficulty-icon">🚀</span>
+                            <span class="difficulty-name">難しい</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="panel-section mode-panel">
+                    <h3>ゲームモード</h3>
+                    <div class="mode-buttons">
+                        <button class="mode-btn active" data-mode="classic">
+                            <span class="mode-icon">🎮</span>
+                            <span class="mode-name">クラシック</span>
+                        </button>
+                        <button class="mode-btn" data-mode="wall">
+                            <span class="mode-icon">🧱</span>
+                            <span class="mode-name">壁あり</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="panel-section achievements-panel">
+                    <h3>達成項目</h3>
+                    <div id="achievementsList" class="achievements-list">
+                        <div class="achievement-placeholder">ゲームを開始してください</div>
+                    </div>
+                </div>
+
+                <div class="panel-section help-panel">
+                    <h3>遊び方</h3>
+                    <ul class="help-list">
+                        <li>🍎 フードを食べて成長</li>
+                        <li>💥 自分や壁にぶつからない</li>
+                        <li>📈 スコアを稼ぐ</li>
+                        <li>⚡ 速度が上がっていく</li>
+                    </ul>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
