@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>おみくじ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="../index.html" class="home-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            ホームに戻る
+        </a>
+    </nav>
+
+    <div class="game-container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40">
+                    <circle cx="20" cy="20" r="18" fill="url(#shrineGradient)"/>
+                    <text x="20" y="28" font-size="20" text-anchor="middle" fill="white">🎋</text>
+                    <defs>
+                        <linearGradient id="shrineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#dc2626"/>
+                            <stop offset="100%" stop-color="#991b1b"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1>おみくじ</h1>
+            </div>
+            <div class="header-controls">
+                <button class="icon-btn" id="helpBtn" title="遊び方">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="soundToggle" title="サウンドON/OFF">
+                    <svg id="soundOn" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <svg id="soundOff" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="themeToggle" title="テーマ切り替え">
+                    <svg id="darkIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="lightIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <div class="shrine-area">
+                <div class="shrine-box" id="shrineBox">
+                    <div class="omikuji-sticks" id="omikujiSticks">
+                        <div class="stick"></div>
+                        <div class="stick"></div>
+                        <div class="stick"></div>
+                        <div class="stick"></div>
+                        <div class="stick"></div>
+                    </div>
+                    <div class="shrine-label">おみくじ箱</div>
+                </div>
+
+                <button class="draw-btn" id="drawBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M2 12h20"></path>
+                    </svg>
+                    おみくじを引く
+                </button>
+            </div>
+
+            <div class="result-area" id="resultArea">
+                <div class="fortune-paper" id="fortunePaper">
+                    <div class="paper-header">
+                        <div class="fortune-rank" id="fortuneRank">？</div>
+                        <div class="fortune-icon" id="fortuneIcon">🎋</div>
+                    </div>
+                    <div class="fortune-message" id="fortuneMessage">
+                        おみくじを引いてください
+                    </div>
+                    <div class="fortune-details" id="fortuneDetails"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- サイドパネル -->
+        <aside class="side-panel">
+            <div class="panel-section">
+                <h3>今日の運勢</h3>
+                <div class="category-list">
+                    <div class="category-item">
+                        <span class="category-icon">💰</span>
+                        <div class="category-info">
+                            <div class="category-name">金運</div>
+                            <div class="category-value" id="money">-</div>
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <span class="category-icon">❤️</span>
+                        <div class="category-info">
+                            <div class="category-name">恋愛運</div>
+                            <div class="category-value" id="love">-</div>
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <span class="category-icon">💼</span>
+                        <div class="category-info">
+                            <div class="category-name">仕事運</div>
+                            <div class="category-value" id="work">-</div>
+                        </div>
+                    </div>
+                    <div class="category-item">
+                        <span class="category-icon">🍀</span>
+                        <div class="category-info">
+                            <div class="category-name">健康運</div>
+                            <div class="category-value" id="health">-</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>ラッキーアイテム</h3>
+                <div class="lucky-item" id="luckyItem">
+                    <div class="item-icon">🎁</div>
+                    <div class="item-name">おみくじを引いてね</div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>ラッキーカラー</h3>
+                <div class="lucky-color" id="luckyColor">
+                    <div class="color-preview"></div>
+                    <div class="color-name">-</div>
+                </div>
+            </div>
+
+            <div class="panel-section stats-panel">
+                <h3>おみくじ履歴</h3>
+                <div class="history-list" id="historyList">
+                    <div class="history-placeholder">まだ引いていません</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- ヘルプモーダル -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>おみくじの遊び方</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>おみくじについて</h3>
+                <p>おみくじは日本の伝統的な占いです。神社やお寺で引くことができます。</p>
+
+                <h3>おみくじの順番</h3>
+                <ol>
+                    <li><strong>大吉</strong> - 最高の運勢</li>
+                    <li><strong>中吉</strong> - とても良い運勢</li>
+                    <li><strong>小吉</strong> - 良い運勢</li>
+                    <li><strong>吉</strong> - 普通の運勢</li>
+                    <li><strong>末吉</strong> - これから良くなる運勢</li>
+                    <li><strong>凶</strong> - 注意が必要な運勢</li>
+                    <li><strong>大凶</strong> - 最も注意が必要な運勢</li>
+                </ol>
+
+                <h3>遊び方</h3>
+                <p>「おみくじを引く」ボタンを押すと、ランダムでおみくじが引かれます。運勢や各種運、ラッキーアイテムなどが表示されます。</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

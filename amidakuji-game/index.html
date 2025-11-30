@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>あみだくじ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="top-nav">
+        <a href="../index.html" class="home-link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            ホームに戻る
+        </a>
+    </nav>
+
+    <div class="game-container">
+        <!-- ヘッダー -->
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40">
+                    <rect width="40" height="40" rx="8" fill="url(#ladderGradient)"/>
+                    <path d="M10 10 L10 30 M20 10 L20 30 M30 10 L30 30" stroke="white" stroke-width="2"/>
+                    <path d="M10 15 L20 15 M20 20 L30 20 M10 25 L20 25" stroke="white" stroke-width="2"/>
+                    <defs>
+                        <linearGradient id="ladderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#3b82f6"/>
+                            <stop offset="100%" stop-color="#1e40af"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1>あみだくじ</h1>
+            </div>
+            <div class="header-controls">
+                <button class="icon-btn" id="helpBtn" title="遊び方">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="soundToggle" title="サウンドON/OFF">
+                    <svg id="soundOn" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                    <svg id="soundOff" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                        <line x1="23" y1="9" x2="17" y2="15"></line>
+                        <line x1="17" y1="9" x2="23" y2="15"></line>
+                    </svg>
+                </button>
+                <button class="icon-btn" id="themeToggle" title="テーマ切り替え">
+                    <svg id="darkIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="lightIcon" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- メインコンテンツ -->
+        <main class="main-content">
+            <div class="canvas-area">
+                <canvas id="gameCanvas"></canvas>
+            </div>
+        </main>
+
+        <!-- サイドパネル -->
+        <aside class="side-panel">
+            <div class="panel-section">
+                <h3>設定</h3>
+                <div class="settings">
+                    <div class="setting-item">
+                        <label for="lineCount">縦線の数</label>
+                        <select id="lineCount">
+                            <option value="3">3本</option>
+                            <option value="4">4本</option>
+                            <option value="5" selected>5本</option>
+                            <option value="6">6本</option>
+                            <option value="7">7本</option>
+                            <option value="8">8本</option>
+                        </select>
+                    </div>
+                    <div class="setting-item">
+                        <label for="ladderCount">横線の数</label>
+                        <select id="ladderCount">
+                            <option value="5">5本</option>
+                            <option value="7">7本</option>
+                            <option value="10" selected>10本</option>
+                            <option value="12">12本</option>
+                            <option value="15">15本</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3>選択肢設定</h3>
+                <div class="options-editor">
+                    <div class="option-inputs" id="optionInputs"></div>
+                    <div class="prize-inputs" id="prizeInputs"></div>
+                </div>
+            </div>
+
+            <div class="panel-section controls-panel">
+                <button class="btn btn-primary" id="generateBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                    </svg>
+                    新しいくじを作成
+                </button>
+                <button class="btn btn-secondary" id="resetBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3h18v18H3zM15 9l-6 6M9 9l6 6"></path>
+                    </svg>
+                    リセット
+                </button>
+            </div>
+
+            <div class="panel-section">
+                <h3>遊び方</h3>
+                <div class="instructions">
+                    <ol>
+                        <li>縦線と横線の数を設定</li>
+                        <li>選択肢と景品を入力</li>
+                        <li>「新しいくじを作成」をクリック</li>
+                        <li>上の選択肢をクリックして結果を確認</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="panel-section result-panel" id="resultPanel" style="display: none;">
+                <h3>結果</h3>
+                <div class="result-display">
+                    <div class="result-text" id="resultText"></div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- ヘルプモーダル -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>あみだくじの遊び方</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>あみだくじとは</h3>
+                <p>あみだくじは、複数の縦線と横線で構成された図を使って、公平に物事を決める日本の伝統的なくじ引き方法です。</p>
+
+                <h3>ルール</h3>
+                <ol>
+                    <li>上部の選択肢から1つを選びます</li>
+                    <li>選んだ縦線を上から下へ辿ります</li>
+                    <li>横線に当たったら、必ずその横線に沿って隣の縦線に移動します</li>
+                    <li>下まで辿り着いた先の景品があなたの結果です</li>
+                </ol>
+
+                <h3>使い方</h3>
+                <ul>
+                    <li><strong>縦線・横線の数</strong>: 参加人数や景品の数に合わせて設定できます</li>
+                    <li><strong>選択肢設定</strong>: 上部に表示される選択肢を自由に編集できます</li>
+                    <li><strong>景品設定</strong>: 下部に表示される景品を自由に編集できます</li>
+                    <li><strong>自動生成</strong>: 「新しいくじを作成」で自動的にランダムな配置が生成されます</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
